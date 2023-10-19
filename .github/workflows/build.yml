@@ -36,6 +36,7 @@ jobs:
         fi
         echo "ruby=$ruby" >> $GITHUB_OUTPUT
     - name: Check if already built
+      if: false
       run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
 
     - name: Set NO_DOCUMENT
