@@ -67,7 +67,7 @@ jobs:
     - name: Install rust toolchain for yjit
       uses: actions-rs/toolchain@v1
       with:
-        toolchain: default
+        toolchain: stable
 
     - name: Set RUBY_BUILD_RUBY_NAME
       run: |
