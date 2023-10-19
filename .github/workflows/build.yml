@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-arm-oss ]
-        ruby: [jruby-9.4.4.0]
+        os: [ubuntu-22.04]
+        ruby: [ruby-3.2.2]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -62,6 +62,11 @@ jobs:
       run: sudo apt-get install -y --no-install-recommends ruby
       if: startsWith(matrix.os, 'ubuntu') && steps.ruby.outputs.ruby == 'ruby-2.5.2'
 
+    - name: Install rust toolchain for yjit
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: default
+
     - name: Set RUBY_BUILD_RUBY_NAME
       run: |
         ruby="${{ steps.ruby.outputs.ruby }}"
@@ -89,7 +94,7 @@ jobs:
       if: startsWith(steps.ruby.outputs.ruby, 'ruby-1.9') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.0') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.1') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.2') || steps.ruby.outputs.ruby == 'ruby-2.6.7'
 
     - name: Set RUBY_CONFIGURE_OPTS
-      run: echo 'RUBY_CONFIGURE_OPTS=--enable-shared --disable-install-doc' >> $GITHUB_ENV
+      run: echo 'RUBY_CONFIGURE_OPTS=--enable-shared --disable-install-doc --enable-yjit' >> $GITHUB_ENV
     # https://github.com/rbenv/ruby-build/discussions/1961#discussioncomment-4031745
     - name: Override RUBY_CONFIGURE_OPTS if macos-arm64 ruby-3.1
       run: echo 'RUBY_CONFIGURE_OPTS=--disable-shared --disable-install-doc' >> $GITHUB_ENV
