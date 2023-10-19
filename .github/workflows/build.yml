@@ -125,7 +125,7 @@ jobs:
       run: gh release upload "toolcache" "${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz"
 
   buildJRubyWindows:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
